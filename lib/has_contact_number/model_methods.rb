@@ -2,7 +2,6 @@
 module HasContactNumber::ModelMethods
 
   extend ActiveSupport::Concern
-  puts '---------------------HasContactNumber::ModelMethods---------------------'
   module ClassMethods
 
     def contact_number_attributes(*columns)
