@@ -28,8 +28,8 @@ module HasContactNumber::ModelMethods
           model.#{column} = model.#{column}_isd_code + model.#{column}_without_isd_code
         }
 
-        validates :#{column}_isd_code, presence: true, if: '#{column}_without_isd_code.present?'
-        validates :#{column}_without_isd_code, presence: true, if: '#{column}_isd_code.present?'
+        validates :#{column}_isd_code, presence: true, if: proc { |model| model.#{column}_without_isd_code.present? }
+        validates :#{column}_without_isd_code, presence: true, if: proc { |model| model.#{column}_isd_code.present? }
         validates :#{column}, phony_plausible: true, if: proc { |model|
           model.#{column}_isd_code.present? && model.#{column}_without_isd_code.present?
         }
