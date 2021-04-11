@@ -4,10 +4,11 @@ module ActionView::Helpers::FormOptionsHelper
   OPTIONS_FOR_ISD_CODES_SELECT = IsoCountryCodes.all.map{ |icc|
     {
       code: icc.calling_code,
+      code_to_i: icc.calling_code.delete('+').to_i,
       code_to_db: icc.calling_code.delete('+').rjust(4, '0')
     }
   }
-  OPTIONS_FOR_ISD_CODES_SELECT_BY_CODE = OPTIONS_FOR_ISD_CODES_SELECT.uniq.map do |record|
+  OPTIONS_FOR_ISD_CODES_SELECT_BY_CODE = OPTIONS_FOR_ISD_CODES_SELECT.uniq.sort_by{|record| record[:code_to_i]}.map do |record|
     [record[:code], record[:code_to_db]]
   end
 
