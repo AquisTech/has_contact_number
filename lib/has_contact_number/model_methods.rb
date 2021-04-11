@@ -20,13 +20,19 @@ module HasContactNumber::ModelMethods
           @#{column}_isd_code ||= #{column} && #{column}[0..3]
         end
 
+        def #{column}_isd_code=(val)
+          @#{column}_isd_code = val
+          self.#{column} = "\#{val}\#{#{column}_without_isd_code}"
+        end
+
         def #{column}_without_isd_code
           @#{column}_without_isd_code ||= #{column} && #{column}[4..-1]
         end
 
-        before_validation { |model|
-          model.#{column} = model.#{column}_isd_code + model.#{column}_without_isd_code
-        }
+        def #{column}_without_isd_code=(val)
+          @#{column}_without_isd_code = val
+          self.#{column} = "\#{#{column}_isd_code}\#{val}"
+        end
 
         validates :#{column}_isd_code, presence: true, if: proc { |model| model.#{column}_without_isd_code.present? }
         validates :#{column}_without_isd_code, presence: true, if: proc { |model| model.#{column}_isd_code.present? }
